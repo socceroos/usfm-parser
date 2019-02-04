@@ -69,7 +69,6 @@ export class UsfmParser extends Parser {
 		value(this, lex, BP, 'cl')
 		value(this, lex, BP, 'cp')
 		value(this, lex, BP, 'd')
-		value(this, lex, BP, 'h')
 		builder.either('h', BP, (left, t, bp) => {
 			const text = lex.peek().match
 			lex.lexer.position += text.length
