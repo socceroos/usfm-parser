@@ -8,11 +8,17 @@ export class UsfmLexer {
 		this.lexer = new Lexer(s)
 		this.lexer.token('TAG', /\\\+?[a-z0-9]+\*?\s*/i)
 		this.lexer.token('TEXT', /[^\\]+/)
+		this.lexer.token('P_GROUP', /\\p\s*/i)
+		this.lexer.token('P', /\\\+?[p]+\*?\s+\w+/i)
 	}
 
 	private _tkn(t: IToken) {
 		if (t.type == 'TAG')
 			t.type = t.match.replace(/^\\/, '').trim()
+		if (t.type == 'P_GROUP')
+			t.type = 'p_group'
+		if (t.type == 'P')
+			t.type = 'p'
 		return t
 	}
 
