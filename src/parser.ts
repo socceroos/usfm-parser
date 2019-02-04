@@ -10,8 +10,8 @@ function single(parser: Parser, bp: number, type: string) {
 
 function value(parser: Parser, lex: UsfmLexer, bp: number, type: string) {
 	const builder = parser.builder()
-	builder.nud(type, bp, (t, bp) => [{[type]: parser.parse(bp)}])
-	builder.led(type, bp, (left, t, bp) => left.concat({[type]: parser.parse(bp)}))
+	builder.nud(type, bp, (t, bp) => [{[type]: parser.parse(bp), type}])
+	builder.led(type, bp, (left, t, bp) => left.concat({[type]: parser.parse(bp), type}))
 }
 
 function enclosed(parser: Parser, lex: UsfmLexer, bp: number, opener: string, closer: string = `${opener}*`, type: string = opener) {
@@ -38,8 +38,10 @@ export class UsfmParser extends Parser {
 		BP += 10
 		builder.led('c', BP, (left, t, bp) => {
 			const num = parseInt(lex.expect('TEXT').match.trim())
+			const id = start
+			start++
 			const content = this.parse(bp)
-			return left.concat({type: 'c', num, content})
+			return left.concat({type: 'c', num, id, content})
 		})
 
 		BP += 10
@@ -47,7 +49,9 @@ export class UsfmParser extends Parser {
 			const text = lex.peek().match
 			const num = /^\s*(\d+)\s*/.exec(text)
 			lex.lexer.position += num[0].length
-			return left.concat({type: 'v', num: parseInt(num[1]), value: this.parse(bp)})
+			const id = start
+			start++
+			return left.concat({type: 'v', num: parseInt(num[1]), id, value: this.parse(bp)})
 		})
 		
 		BP += 10
@@ -66,6 +70,13 @@ export class UsfmParser extends Parser {
 		value(this, lex, BP, 'cp')
 		value(this, lex, BP, 'd')
 		value(this, lex, BP, 'h')
+		builder.either('h', BP, (left, t, bp) => {
+			const text = lex.peek().match
+			lex.lexer.position += text.length
+			const id = start
+			start++
+			return left.concat({ type: 'h', text, id, value: this.parse(bp) })
+		})
 		value(this, lex, BP, 'id')
 		value(this, lex, BP, 'ide')
 		value(this, lex, BP, 'ili')
@@ -102,4 +113,6 @@ export class UsfmParser extends Parser {
 		value(this, lex, BP, 'xo')
 		value(this, lex, BP, 'xt')
 	}
+	
+	start = 0
 }
