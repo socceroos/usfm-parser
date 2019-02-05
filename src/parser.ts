@@ -29,7 +29,6 @@ export class UsfmParser extends Parser {
 
 	constructor(lex: UsfmLexer) {
 		super(lex)
-		console.log('safsdf');
 		const builder = this.builder()
 		builder.bp('$EOF', -1)
 		builder.nud('TEXT', Number.MAX_VALUE, (t, bp) => [t.match.replace(/(^(\r?\n)+|(\r?\n)+$)/g, '')])
