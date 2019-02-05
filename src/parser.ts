@@ -46,6 +46,12 @@ export class UsfmParser extends Parser {
 			const content = this.parse(bp)
 			return left.concat({type: 'c', num, id, content})
 		})
+		
+		BP += 10
+		builder.either('p_group', BP, (left, t, bp) => {
+			const content = this.parse(bp)
+			return left.concat({ type: 'p_group', content })
+		})
 
 		BP += 10
 		builder.led('v', BP, (left, t, bp) => {
