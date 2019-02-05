@@ -1,5 +1,5 @@
-import * as arrify from 'arrify'
-import {Parser, ParserBuilder, ILexer, LedFunction} from 'pratt'
+import arrify from 'arrify'
+import {Parser} from 'pratt'
 import {UsfmLexer} from './lexer'
 
 function single(parser: Parser, bp: number, type: string) {
@@ -25,8 +25,11 @@ function enclosed(parser: Parser, lex: UsfmLexer, bp: number, opener: string, cl
 }
 
 export class UsfmParser extends Parser {
+	start = 0
+
 	constructor(lex: UsfmLexer) {
 		super(lex)
+		console.log('safsdf');
 		const builder = this.builder()
 		builder.bp('$EOF', -1)
 		builder.nud('TEXT', Number.MAX_VALUE, (t, bp) => [t.match.replace(/(^(\r?\n)+|(\r?\n)+$)/g, '')])
@@ -38,8 +41,8 @@ export class UsfmParser extends Parser {
 		BP += 10
 		builder.led('c', BP, (left, t, bp) => {
 			const num = parseInt(lex.expect('TEXT').match.trim())
-			const id = start
-			start++
+			const id = this.start
+			this.start++
 			const content = this.parse(bp)
 			return left.concat({type: 'c', num, id, content})
 		})
@@ -49,8 +52,8 @@ export class UsfmParser extends Parser {
 			const text = lex.peek().match
 			const num = /^\s*(\d+)\s*/.exec(text)
 			lex.lexer.position += num[0].length
-			const id = start
-			start++
+			const id = this.start
+			this.start++
 			return left.concat({type: 'v', num: parseInt(num[1]), id, value: this.parse(bp)})
 		})
 		
@@ -72,8 +75,8 @@ export class UsfmParser extends Parser {
 		builder.either('h', BP, (left, t, bp) => {
 			const text = lex.peek().match
 			lex.lexer.position += text.length
-			const id = start
-			start++
+			const id = this.start
+			this.start++
 			return left.concat({ type: 'h', text, id, value: this.parse(bp) })
 		})
 		value(this, lex, BP, 'id')
@@ -112,6 +115,4 @@ export class UsfmParser extends Parser {
 		value(this, lex, BP, 'xo')
 		value(this, lex, BP, 'xt')
 	}
-	
-	start = 0
 }
