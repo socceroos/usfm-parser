@@ -1,6 +1,13 @@
-import arrify from 'arrify'
 import {Parser} from 'pratt'
 import {UsfmLexer} from './lexer'
+
+function arrify(val) {
+	if (val === null || val === undefined) {
+		return []
+	}
+
+	return Array.isArray(val) ? val : [val]
+}
 
 function single(parser: Parser, bp: number, type: string) {
 	parser.builder()

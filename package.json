@@ -11,7 +11,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "arrify": "^1.0.1",
     "perplex": "^0.7.1",
     "pratt": "^0.1.4"
   },
