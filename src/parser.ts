@@ -56,17 +56,17 @@ export class UsfmParser extends Parser {
 		BP += 10
 		builder.either('p_group', BP, (left, t, bp) => {
 			const content = this.parse(bp)
-			return left.concat({ type: 'p_group', content })
+			return arrify(left).concat({ type: 'p_group', content })
 		})
 
 		BP += 10
-		builder.led('v', BP, (left, t, bp) => {
+		builder.either('v', BP, (left, t, bp) => {
 			const text = lex.peek().match
 			const num = /^\s*(\d+)\s*/.exec(text)
 			lex.lexer.position += num[0].length
 			const id = this.start
 			this.start++
-			return left.concat({type: 'v', num: parseInt(num[1]), id, value: this.parse(bp)})
+			return arrify(left).concat({type: 'v', num: parseInt(num[1]), id, value: this.parse(bp)})
 		})
 		
 		BP += 10

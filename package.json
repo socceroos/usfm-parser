@@ -20,7 +20,8 @@
     "@types/node": "^7.0.12",
     "lodash": "^4.17.4",
     "thunk-to-promise": "^1.0.1",
-    "typescript": "^2.2.2"
+    "ts-node": "^8.0.2",
+    "typescript": "^2.9.2"
   },
   "repository": "jrop/usfm-parser",
   "files": [
