@@ -89,7 +89,7 @@ export class UsfmParser extends Parser {
 			lex.lexer.position += text.length
 			const id = this.start
 			this.start++
-			return left.concat({ type: 'h', text, id, value: this.parse(bp) })
+			return arrify(left).concat({ type: 'h', text, id, value: this.parse(bp) })
 		})
 		value(this, lex, BP, 'id')
 		value(this, lex, BP, 'ide')
