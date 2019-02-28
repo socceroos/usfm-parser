@@ -6,19 +6,20 @@ export class UsfmLexer {
 	public lexer: Lexer
 	constructor(s?: string) {
 		this.lexer = new Lexer(s)
-		this.lexer.token('TAG', /\\\+?[a-oq-z0-9]+\*?\s*/i)
-		this.lexer.token('TEXT', /[^\\]+/)
-		this.lexer.token('P_GROUP', /\\p\s*/i)
-		this.lexer.token('P', /\\\+?[p]+\*?\s+\w+/i)
+		this.lexer
+			.token('TAG', /\\\+?[^p]{1}\w?\*?\s*/i)
+			.token('TEXT', /[^\\]+/)
+			.token('P', /^\\p\s?\n/i)
+			.token('BR', /^\\p\s/i)
 	}
 
 	private _tkn(t: IToken) {
 		if (t.type == 'TAG')
 			t.type = t.match.replace(/^\\/, '').trim()
-		if (t.type == 'P_GROUP')
-			t.type = 'p_group'
 		if (t.type == 'P')
 			t.type = 'p'
+		if (t.type == 'BR')
+			t.type = 'br'
 		return t
 	}
 

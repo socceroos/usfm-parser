@@ -60,7 +60,7 @@ class Test {
         const usfmParser = new UsfmParser(usfmLexer)
         usfmParser.start = 1
         const result = usfmParser.parse()
-        console.log(JSON.stringify(result))
+        console.log(JSON.stringify(result, null, 2))
     }
 }
 

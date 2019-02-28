@@ -38,10 +38,15 @@ export class UsfmParser extends Parser {
 		super(lex)
 		const builder = this.builder()
 		builder.bp('$EOF', -1)
-		builder.nud('TEXT', Number.MAX_VALUE, (t, bp) => [t.match.replace(/(^(\r?\n)+|(\r?\n)+$)/g, '')])
+		builder.nud(
+			'TEXT',
+			Number.MAX_VALUE,
+			(t, bp) => [t.match.replace(/(^(\r?\n)+|(\r?\n)+$)/g, '')]
+		)
 		builder.led('TEXT', Number.MAX_VALUE, (left, t, bp) => 
 			left.concat(t.match.replace(/(^(\r?\n)+|(\r?\n)+$)/g, '')))
 
+		// binding power
 		let BP = 10
 
 		BP += 10
@@ -54,9 +59,9 @@ export class UsfmParser extends Parser {
 		})
 		
 		BP += 10
-		builder.either('p_group', BP, (left, t, bp) => {
+		builder.either('p', BP, (left, t, bp) => {
 			const content = this.parse(bp)
-			return arrify(left).concat({ type: 'p_group', content })
+			return arrify(left).concat({ type: 'p', content })
 		})
 
 		BP += 10
@@ -70,12 +75,15 @@ export class UsfmParser extends Parser {
 		})
 		
 		BP += 10
+		builder.either('br', BP, (left, t, bp) => {
+			const content = this.parse(bp)
+			return arrify(left).concat({ type: 'br', content })
+		})
 		single(this, BP, 'b')
 		single(this, BP, 'li1')
 		single(this, BP, 'm')
 		single(this, BP, 'mi')
 		single(this, BP, 'nb')
-		single(this, BP, 'p')
 		single(this, BP, 'pc')
 		single(this, BP, 'pi1')
 		single(this, BP, 'q1')
