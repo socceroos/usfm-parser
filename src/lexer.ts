@@ -7,19 +7,18 @@ export class UsfmLexer {
 	constructor(s?: string) {
 		this.lexer = new Lexer(s)
 		this.lexer
-			.token('TAG', /\\\+?[^p]{1}\w?\*?\s*/i)
+			.token('TAG', /\\\+?[^p]{1}\w{0,}\*?\s*/i)
 			.token('TEXT', /[^\\]+/)
-			.token('P', /^\\p\s?\n/i)
-			.token('BR', /^\\p\s/i)
+			.token('p', /^\\p\s?\n/i)
+			.token('br', /^\\p\s/i)
+			.token('po', /^\\po\s?\n/i)
+			.token('pr', /^\\pr\s/i)
 	}
 
 	private _tkn(t: IToken) {
 		if (t.type == 'TAG')
 			t.type = t.match.replace(/^\\/, '').trim()
-		if (t.type == 'P')
-			t.type = 'p'
-		if (t.type == 'BR')
-			t.type = 'br'
+
 		return t
 	}
 
