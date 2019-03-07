@@ -100,9 +100,9 @@ export class UsfmParser extends Parser {
 		builder.either('h', BP, (left, t, bp) => {
 			const text = lex.peek().match
 			lex.lexer.position += text.length
-			const id = this.start
-			this.start++
-			return arrify(left).concat({ type: 'h', text, id, value: this.parse(bp) })
+			// const id = this.start
+			// this.start++
+			return arrify(left).concat({ type: 'h', text, value: this.parse(bp) })
 		})
 
 		// \p [text]
