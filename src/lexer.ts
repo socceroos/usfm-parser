@@ -13,6 +13,8 @@ export class UsfmLexer {
 			.token('br', /^\\p\s/i)
 			.token('po', /^\\po\s?\n/i)
 			.token('pr', /^\\pr\s/i)
+			.token('p', /^\\pi\d\s?\n/i)
+			.token('br', /^\\pi\d\s/i)
 	}
 
 	private _tkn(t: IToken) {
