@@ -63,7 +63,7 @@ export class UsfmParser extends Parser {
 			const content = this.parse(bp)
 			return left.concat({type: 'c', num, id, content})
 		})
-		
+
 		BP += 10
 
 		// \p
@@ -94,7 +94,7 @@ export class UsfmParser extends Parser {
 
 			return arrify(left).concat({type: 'v', num: parseInt(num[1]), id, value: this.parse(bp)})
 		})
-		
+
 		BP += 10
 
 		builder.either('h', BP, (left, t, bp) => {
@@ -152,6 +152,9 @@ export class UsfmParser extends Parser {
 		value(this, lex, BP, 'ide')
 		value(this, lex, BP, 'ili')
 		value(this, lex, BP, 'ili2')
+		value(this, lex, BP, 'imt1')
+		value(this, lex, BP, 'imt2')
+		value(this, lex, BP, 'imt3')
 		value(this, lex, BP, 'ip')
 		value(this, lex, BP, 'is1')
 		value(this, lex, BP, 'ms1')
@@ -162,6 +165,7 @@ export class UsfmParser extends Parser {
 		content(this, lex, BP, 'mt2')
 		content(this, lex, BP, 'mt3')
 
+		value(this, lex, BP, 'mr')
 		value(this, lex, BP, 's1')
 		value(this, lex, BP, 'sp')
 		value(this, lex, BP, 'toc1')
@@ -173,6 +177,7 @@ export class UsfmParser extends Parser {
 		enclosed(this, lex, BP, 'bk')
 		enclosed(this, lex, BP, 'f')
 		enclosed(this, lex, BP, 'k')
+		enclosed(this, lex, BP, 'nd')
 
 		// \qs ... \qs*
 		enclosed(this, lex, BP, 'qs')
@@ -182,6 +187,7 @@ export class UsfmParser extends Parser {
 		enclosed(this, lex, BP, 'qac')
 
 		enclosed(this, lex, BP, 'wj')
+		enclosed(this, lex, BP, 'w')
 		enclosed(this, lex, BP, 'x')
 
 		BP += 10
